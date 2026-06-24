@@ -19,7 +19,7 @@ Technologies
 
 Dataset
 
-The dataset was obtained from the World Bank Open Data platform and contains internet usage indicators for countries and regions across multiple years.
+The dataset was obtained from the World Bank Open Data platform and contains internet usage indicators for countries and regions across multiple years. "data.worldbank.org" (https://reference-url-citation.invalid/0)
 
 Future Improvements
 
@@ -34,6 +34,4 @@ Thabo
 
 References
 
-World Bank Open Data. Internet usage indicators.
-
-
+World Bank Open Data. Internet usage indicators
