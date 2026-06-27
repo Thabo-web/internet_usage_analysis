@@ -1,37 +1,82 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# Loading data
 data = "/workspaces/internet_usage_analysis/INT_BAND_PER_USR.csv"
-
 df=pd.read_csv(data)
 
-#clean
-df.dropna(subset=["STRUCTURE","STRUCTURE_ID","ACTION","FREQ","REF_AREA",
-                        "INDICATOR","SEX","AGE","URBANISATION","UNIT_MEASURE",
-                        "COMP_BREAKDOWN_1","COMP_BREAKDOWN_2","COMP_BREAKDOWN_3"], axis=0,inplace=True)
+# Data Inspection of first 10 rows
+print(df.head())
+print("Dataset Information:\n\t",df.info())
+print("Missing Values:\n\t",df.isnull().sum())
+print("Missing Values:\n\t", df.duplicated().sum())
 
+# Data Formatting: Keep the only neccessary columns for analysis
+df = df[[
+     "REF_AREA_LABEL",
+     "TIME_PERIOD",
+     "OBS_VALUE",
+     "INDICATOR_LABEL"
+]]
+
+# Measure selection
+measure = "OBS_VALUE"
+print("Measure:\t")
+print(df[measure].describe())
+# Clean measure data
+df = df[measure]
+# ===========================
+# Rename and Save to new file
+# ===========================
 df.to_csv("/workspaces/internet_usage_analysis/CLEAN_INT_BAND_PER_USR.csv")
-infor = df.describe()
 
-ypoint = df["OBS_VALUE"]
-xpoint = df["REF_AREA_LABEL"]
+# Rename columns
+df.columns = [
+      "Country",
+      "Year",
+      "InternetUsage",
+      "Indicator"
+]
 
-print(infor)
-print()
-print(df.info())
+# Ommission of missing values & duplicate rows
+df.dropna()
 
+#=================
+#Ongoing Debugging
+#=================
+print(df.columns)
+print(df.head())
 
-plt.title("Internet Usage")
-#plt.color_sequences
-plt.xlabel("reference area",c='r')
-plt.ylabel("obs-value",c='r')
+# Coverting data types
+df["Year"] = df["Year"].astype(int)
+df["InternetUsage"] = pd.to_numeric(df["InternetUsage"])
+print("SUCCESS CLEANING.............")
+print(df.head())
 
-#Analysis
+# ========
+# Analysis
+# ========
+print("\nAverage Inernet Usage by Country:\t")
+print(df.groupby("Country")["InterneUsage"].mean().sort_values(asceding=False))
 
-print(df.head(3))
-plt.plot(ypoint,xpoint,marker='o',ls='--')
+# Data filtration
+sa = df[df["Country"] == "South Africa"]
 
-#Save Graph as.png for visuals
+# ==================
+# Data Visualization
+# ==================
+plt.figure(figsize=(10,6))
+plt.plot(sa["Year"],
+         sa["InternetUsage"],
+         marker="o")
+
+plt.title("Internet Usage in South Africa")
+plt.xlabel("Year",c='r')
+plt.ylabel("Internet Usage",c='r')
+plt.grid(True)
+
+# Save Graph as .png for visuals
 plt.savefig("graph.png")
+
 #Display Graphs
 plt.show()
