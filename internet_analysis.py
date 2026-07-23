@@ -72,7 +72,7 @@ plt.plot(sa["Year"],
 
 plt.title("Internet Usage in South Africa")
 plt.xlabel("Year",c='r')
-plt.ylabel("Internet Usage",c='r')
+plt.ylabel("Internet Usage(kilobytes)",c='r')
 plt.grid(True)
 
 # Save Graph as .png for visuals
